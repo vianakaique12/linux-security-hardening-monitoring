@@ -1,56 +1,57 @@
-🚨 Passo 4 — Proteção contra Ataques de Força Bruta com Fail2Ban
-🎯 Objetivo
+###🚨 Passo 4 — Proteção contra Ataques de Força Bruta com Fail2Ban
+###🎯 Objetivo
 
-Implementar um mecanismo de detecção e bloqueio automático de tentativas de acesso maliciosas ao serviço SSH.
+#Implementar um mecanismo de detecção e bloqueio automático de tentativas de acesso maliciosas ao serviço SSH.
 
-Este passo adiciona uma camada ativa de defesa, complementando:
+#Este passo adiciona uma camada ativa de defesa, complementando:
 
-Hardening de SSH (Passo 2)
+#Hardening de SSH (Passo 2)
 
-Firewall UFW (Passo 3)
+#Firewall UFW (Passo 3)
 
-🧪 Ambiente
+###🧪 Ambiente
 
-Sistema Operacional: Kali Linux (VirtualBox)
+#Sistema Operacional: Kali Linux (VirtualBox)
 
-Serviço protegido: SSH
+#Serviço protegido: SSH
 
-Porta SSH: 2222
+#Porta SSH: 2222
 
-Ferramenta: Fail2Ban
+#Ferramenta: Fail2Ban
 
-🧠 Conceito
 
-O Fail2Ban monitora arquivos de log do sistema e, ao identificar padrões de ataque (como múltiplas falhas de autenticação), aplica bloqueios automáticos no firewall.
+###🧠 Conceito
 
-📌 Atua como um IDS reativo, reduzindo o impacto de ataques automatizados.
+#O Fail2Ban monitora arquivos de log do sistema e, ao identificar padrões de ataque (como múltiplas falhas de autenticação), aplica bloqueios automáticos no firewall.
 
-🔎 Instalação do Fail2Ban
+#📌 Atua como um IDS reativo, reduzindo o impacto de ataques automatizados.
 
-Foi verificado se o Fail2Ban estava instalado no sistema.
-Caso não estivesse presente, foi realizada a instalação.
+###🔎 Instalação do Fail2Ban
+
+#Foi verificado se o Fail2Ban estava instalado no sistema.
+#Caso não estivesse presente, foi realizada a instalação.
 
 sudo apt update
 sudo apt install fail2ban -y
 
-🔁 Ativação do Serviço
+###🔁 Ativação do Serviço
 
-O serviço foi habilitado e iniciado para garantir proteção contínua.
+#O serviço foi habilitado e iniciado para garantir proteção contínua.
 
 sudo systemctl enable fail2ban
 sudo systemctl start fail2ban
 
-💾 Configuração Segura
+###💾 Configuração Segura
 
-Por boas práticas, a configuração padrão não foi alterada diretamente.
+#Por boas práticas, a configuração padrão não foi alterada diretamente.
 
-Foi criado um arquivo de configuração local:
+#Foi criado um arquivo de configuração local:
 
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 
-⚙️ Configuração do Jail SSH
+###⚙️ Configuração do Jail SSH
 
-No arquivo jail.local, o jail do SSH foi habilitado e ajustado para o ambiente.
+#No arquivo jail.local, o jail do SSH foi habilitado e ajustado para o ambiente.
 
 [sshd]
 enabled = true
@@ -59,59 +60,66 @@ maxretry = 3
 findtime = 600
 bantime = 600
 
-🔐 Parâmetros aplicados
+###🔐 Parâmetros aplicados
 
-maxretry: número máximo de tentativas
+#maxretry: número máximo de tentativas
 
-findtime: janela de tempo para contagem
+#findtime: janela de tempo para contagem
 
-bantime: duração do bloqueio
+#bantime: duração do bloqueio
 
-🔄 Reinicialização do Fail2Ban
+###🔄 Reinicialização do Fail2Ban
 
-Após as alterações, o serviço foi reiniciado para aplicar a configuração.
+#Após as alterações, o serviço foi reiniciado para aplicar a configuração.
 
 sudo systemctl restart fail2ban
 
-🧪 Validação da Proteção
+###🧪 Validação da Proteção
 
-Foi verificado o status do jail SSH no Fail2Ban.
+#Foi verificado o status do jail SSH no Fail2Ban.
 
 sudo fail2ban-client status sshd
 
-
+Status for the jail: sshd
+|- Filter
+|  |- Currently failed: 0
+|  |- Total failed:     0
+|  `- Journal matches:  _SYSTEMD_UNIT=ssh.service + _COMM=sshd
+`- Actions
+   |- Currently banned: 0
+   |- Total banned:     0
 📌 A saída confirma:
 
-Jail ativo
+#Jail ativo
 
-Tentativas monitoradas
+#Tentativas monitoradas
 
-IPs banidos (quando aplicável)
+#IPs banidos (quando aplicável)
 
-📊 Impacto de Segurança
+###📊 Impacto de Segurança
 
-Com o Fail2Ban ativo:
+#Com o Fail2Ban ativo:
 
-Ataques de força bruta são mitigados automaticamente
+#Ataques de força bruta são mitigados automaticamente
 
-IPs maliciosos são bloqueados em tempo real
+#IPs maliciosos são bloqueados em tempo real
 
-Logs de segurança passam a gerar resposta ativa
+#Logs de segurança passam a gerar resposta ativa
 
-✅ Resultado
+###✅ Resultado
 
-O sistema passou a contar com proteção automática contra ataques ao SSH, fortalecendo a postura de segurança do ambiente.
+#O sistema passou a contar com proteção automática contra ataques ao SSH, fortalecendo a postura de segurança do ambiente.
 
-Este passo conclui a defesa em profundidade aplicada ao servidor Linux.
+#Este passo conclui a defesa em profundidade aplicada ao servidor Linux.
 
-🧠 Aprendizados
+###🧠 Aprendizados
 
-Uso de logs como fonte de detecção
+#Uso de logs como fonte de detecção
 
-Automação de resposta a incidentes
+#Automação de resposta a incidentes
 
-Integração entre SSH, firewall e Fail2Ban
+#Integração entre SSH, firewall e Fail2Ban
 
-🏁 Conclusão do Projeto
+###🏁 Conclusão do Projeto
 
-Com os Passos 2, 3 e 4, foi implementado um Hardening completo de acesso remoto em Linux, simulando práticas reais de segurança defensiva.
+#Com os Passos 2, 3 e 4, foi implementado um Hardening completo de acesso remoto em Linux, simulando práticas reais de segurança defensiva.
