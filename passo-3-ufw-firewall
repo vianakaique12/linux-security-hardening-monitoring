@@ -1,11 +1,11 @@
-🔥 Passo 3 — Configuração de Firewall com UFW no Kali Linux
-🎯 Objetivo
+###🔥 Passo 3 — Configuração de Firewall com UFW no Kali Linux
+###🎯 Objetivo
 
 Configurar um firewall para controlar o tráfego de rede, permitindo apenas conexões essenciais e bloqueando acessos não autorizados.
 
 Este passo complementa o Hardening de SSH (Passo 2), adicionando uma camada de segurança em nível de rede.
 
-🧪 Ambiente
+###🧪 Ambiente
 
 Sistema Operacional: Kali Linux (VirtualBox)
 
@@ -15,7 +15,7 @@ Serviço protegido: SSH
 
 Porta SSH customizada: 2222
 
-🔎 Verificação e Instalação do UFW
+###🔎 Verificação e Instalação do UFW
 
 Foi verificado se o firewall UFW estava instalado no sistema.
 Caso não estivesse presente, foi realizada a instalação.
@@ -23,7 +23,7 @@ Caso não estivesse presente, foi realizada a instalação.
 sudo apt update
 sudo apt install ufw -y
 
-⚙️ Configurações Aplicadas
+###⚙️ Configurações Aplicadas
 🚫 Definição das políticas padrão
 
 Foi adotado o princípio deny by default, bloqueando todas as conexões de entrada por padrão.
@@ -35,7 +35,7 @@ sudo ufw default allow outgoing
 Motivo:
 Garante que apenas conexões explicitamente autorizadas sejam permitidas.
 
-🔓 Liberação da porta SSH
+###🔓 Liberação da porta SSH
 
 Como o serviço SSH foi configurado para usar a porta 2222 no Passo 2, essa porta foi liberada no firewall.
 
@@ -45,7 +45,7 @@ sudo ufw allow 2222/tcp
 Motivo:
 Permitir acesso remoto seguro ao servidor sem expor outras portas.
 
-🔐 Ativação do Firewall
+###🔐 Ativação do Firewall
 
 Após a configuração das regras, o firewall foi ativado.
 
@@ -54,7 +54,7 @@ sudo ufw enable
 
 📌 Durante a ativação, foi confirmada a manutenção do acesso SSH.
 
-🧪 Validação das Regras
+###🧪 Validação das Regras
 
 O status do firewall foi verificado para confirmar se as regras estavam aplicadas corretamente.
 
@@ -71,7 +71,7 @@ Porta 2222 liberada
 
 Demais portas bloqueadas
 
-📊 Impacto de Segurança
+###📊 Impacto de Segurança
 
 Com o firewall ativo:
 
@@ -81,13 +81,13 @@ Varreduras de portas são automaticamente bloqueadas
 
 Superfície de ataque do sistema foi reduzida
 
-✅ Resultado
+###✅ Resultado
 
 O firewall UFW foi configurado com sucesso, permitindo apenas o tráfego essencial e reforçando a segurança do sistema.
 
 Este passo atua como camada de defesa em profundidade, em conjunto com o Hardening de SSH.
 
-🧠 Aprendizados
+###🧠 Aprendizados
 
 Importância do firewall como controle de perímetro
 
