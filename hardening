@@ -1,0 +1,115 @@
+# 🔐 Hardening de SSH no Kali Linux
+
+### 📌 Objetivo
+Implementar boas práticas de segurança no serviço SSH para reduzir riscos como:
+- Ataques de força bruta
+- Acesso não autorizado
+- Enumeração de usuários
+- Comprometimento do usuário root
+
+Este hardening simula a atuação de um **Analista de Segurança / Blue Team** responsável por proteger um servidor Linux.
+
+---
+
+### 🧪 Ambiente
+- Sistema Operacional: Kali Linux
+- Serviço: OpenSSH Server
+- Arquivo de configuração: `/etc/ssh/sshd_config`
+- Acesso remoto via SSH
+
+---
+
+### 🔎 Verificação inicial do serviço SSH
+Antes das alterações, foi verificado se o serviço SSH estava ativo:
+
+```bash
+sudo systemctl status ssh
+
+Caso não estivesse instalado:
+
+sudo apt update
+sudo apt install openssh-server -y
+
+### 💾 Backup da configuração original
+
+Antes de qualquer modificação, foi realizado backup do arquivo original:
+
+sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+
+### ⚙️ Configurações de Hardening Aplicadas
+## 🔴 Desativar login como root
+PermitRootLogin no
+
+
+Motivo: evita ataques diretos ao usuário root, que é o principal alvo em tentativas de invasão.
+
+###🔐 Forçar uso de protocolo seguro
+Protocol 2
+
+
+Motivo: elimina versões antigas e inseguras do protocolo SSH.
+
+### 👤 Restringir usuários permitidos
+AllowUsers kali
+
+
+Motivo: impede que usuários não autorizados tentem autenticação no serviço SSH.
+
+### 🔑 Autenticação por chave pública
+PubkeyAuthentication yes
+PasswordAuthentication no
+
+
+Motivo: autenticação por chave é mais segura que senha e reduz ataques de brute force.
+
+### ⚠️ A autenticação por senha só foi desativada após a configuração correta das chaves SSH.
+
+### ⏱️ Limitar tentativas de login e tempo
+MaxAuthTries 3
+LoginGraceTime 30
+
+
+Motivo: reduz a eficácia de ataques automatizados.
+
+### 🚫 Desativar recursos desnecessários
+X11Forwarding no
+AllowTcpForwarding no
+
+
+Motivo: diminui a superfície de ataque do serviço SSH.
+
+### 🔁 Alterar porta padrão (opcional)
+Port 2222
+
+
+Motivo: reduz ruído de scanners automáticos que atacam a porta 22 por padrão.
+
+### 🧪 Validação da configuração
+
+Antes de reiniciar o serviço, foi validada a sintaxe:
+
+sudo sshd -t
+
+
+Nenhum erro foi retornado, indicando configuração válida.
+
+### 🔄 Reinicialização do serviço SSH
+sudo systemctl restart ssh
+
+### 🔌 Teste de conexão
+
+Teste de acesso remoto ao servidor:
+
+ssh -p 2222 kali@IP_DO_SERVIDOR
+
+
+O acesso foi realizado com sucesso utilizando autenticação por chave.
+
+### 📊 Monitoramento de Logs
+
+Para acompanhar tentativas de acesso e possíveis ataques:
+
+sudo tail -f /var/log/auth.log
+
+
+Foram observadas tentativas de autenticação inválidas e conexões bem-sucedidas, permitindo análise de eventos de segurança.
