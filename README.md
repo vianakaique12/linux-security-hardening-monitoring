@@ -1,30 +1,35 @@
-# 🔐 Linux Security Hardening & Monitoring
+# 🔐 Linux Server Hardening
 
-## 📌 Descrição do Projeto
-Este projeto tem como objetivo demonstrar a aplicação prática de **boas práticas de segurança em sistemas Linux**, simulando o trabalho de um **Analista de Segurança / Blue Team** responsável por proteger um servidor contra acessos não autorizados e ataques comuns, como brute force em SSH.
-
-O projeto aborda **hardening**, **monitoramento** e **análise de logs**, com foco em segurança defensiva.
+## 📌 Descrição
+Projeto de hardening de servidor Linux com foco em segurança defensiva (Blue Team), aplicando boas práticas para proteção do acesso remoto e controle de tráfego de rede.
 
 ---
 
-## 🎯 Objetivos
-- Reduzir a superfície de ataque do sistema
-- Proteger o serviço SSH contra acessos indevidos
-- Implementar controles básicos de firewall
-- Monitorar tentativas de login suspeitas
-- Desenvolver mentalidade de segurança (Blue Team)
+## 🎯 Objetivo
+Reduzir a superfície de ataque do sistema através do endurecimento do serviço SSH e da implementação de firewall.
 
 ---
 
-## 🧰 Ferramentas Utilizadas
-- Kali Linux
-- OpenSSH Server
+## 🧪 Ambiente
+- Sistema Operacional: Kali Linux
+- Virtualização: VirtualBox
+- Tipo de rede: NAT / Bridge
+- Usuário: kali
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+- OpenSSH
 - UFW (Uncomplicated Firewall)
-- Logs do sistema Linux (`auth.log`)
-- Git & GitHub
-- Terminal Linux
+- Linux (Debian-based)
 
 ---
 
-## 🏗️ Estrutura do Projeto
+## 📚 Conteúdo do Projeto
+1. Hardening do serviço SSH
+2. Configuração de Firewall com UFW
 
+---
+
+## 📌 Observações
+Este projeto foi desenvolvido em ambiente controlado de laboratório para fins educacionais e de portfólio.
