@@ -1,115 +1,133 @@
-# 🔐 Hardening de SSH no Kali Linux
+###🔐 Passo 2 — Hardening de SSH no Kali Linux
+###🎯 Objetivo
 
-### 📌 Objetivo
-Implementar boas práticas de segurança no serviço SSH para reduzir riscos como:
-- Ataques de força bruta
-- Acesso não autorizado
-- Enumeração de usuários
-- Comprometimento do usuário root
+Fortalecer o serviço SSH aplicando boas práticas de segurança para reduzir riscos como:
 
-Este hardening simula a atuação de um **Analista de Segurança / Blue Team** responsável por proteger um servidor Linux.
+Ataques de força bruta
 
----
+Acesso não autorizado
 
-### 🧪 Ambiente
-- Sistema Operacional: Kali Linux
-- Serviço: OpenSSH Server
-- Arquivo de configuração: `/etc/ssh/sshd_config`
-- Acesso remoto via SSH
+Enumeração de usuários
 
----
+Comprometimento do usuário root
 
-### 🔎 Verificação inicial do serviço SSH
-Antes das alterações, foi verificado se o serviço SSH estava ativo:
+Este passo simula a atuação de um Analista de Segurança (Blue Team) responsável por proteger o acesso remoto a um servidor Linux.
 
-```bash
-sudo systemctl status ssh
+###🧪 Ambiente
 
-Caso não estivesse instalado:
+Sistema Operacional: Kali Linux (VirtualBox)
 
-sudo apt update
-sudo apt install openssh-server -y
+Serviço: OpenSSH Server
 
-### 💾 Backup da configuração original
+Arquivo de configuração: /etc/ssh/sshd_config
 
-Antes de qualquer modificação, foi realizado backup do arquivo original:
+Acesso remoto via SSH
 
-sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+###🔎 Verificação inicial do serviço SSH
 
-### ⚙️ Configurações de Hardening Aplicadas
-## 🔴 Desativar login como root
+Antes de aplicar qualquer alteração, foi verificado se o serviço SSH estava ativo no sistema.
+
+Caso o serviço não estivesse instalado, foi realizada a instalação do OpenSSH Server.
+
+###💾 Backup da configuração original
+
+Antes de qualquer modificação, foi criado um backup do arquivo de configuração original do SSH, garantindo possibilidade de reversão em caso de erro.
+
+📌 Boa prática essencial em ambientes reais.
+
+###⚙️ Configurações de Hardening Aplicadas
+
+As seguintes medidas de segurança foram implementadas no arquivo sshd_config:
+
+🔴 Desativação do login como root
 PermitRootLogin no
 
+Motivo:
+O usuário root é o principal alvo de ataques. Desativar o login direto reduz drasticamente o risco de comprometimento total do sistema.
 
-Motivo: evita ataques diretos ao usuário root, que é o principal alvo em tentativas de invasão.
-
-###🔐 Forçar uso de protocolo seguro
-Protocol 2
-
-
-Motivo: elimina versões antigas e inseguras do protocolo SSH.
-
-### 👤 Restringir usuários permitidos
-AllowUsers kali
-
-
-Motivo: impede que usuários não autorizados tentem autenticação no serviço SSH.
-
-### 🔑 Autenticação por chave pública
+###🔐 Autenticação por chave pública
 PubkeyAuthentication yes
 PasswordAuthentication no
 
+Motivo:
+Autenticação por chave é mais segura que senha e praticamente elimina ataques de força bruta.
 
-Motivo: autenticação por chave é mais segura que senha e reduz ataques de brute force.
+⚠️ A autenticação por senha só foi desativada após a configuração correta das chaves SSH.
 
-### ⚠️ A autenticação por senha só foi desativada após a configuração correta das chaves SSH.
+###👤 Restrição de usuários permitidos
+AllowUsers kali
 
-### ⏱️ Limitar tentativas de login e tempo
+
+Motivo:
+Limita quais usuários podem tentar autenticação no serviço SSH, impedindo tentativas por contas inexistentes ou não autorizadas.
+
+###⏱️ Limitação de tentativas de login
 MaxAuthTries 3
 LoginGraceTime 30
 
 
-Motivo: reduz a eficácia de ataques automatizados.
+Motivo:
+Reduz a eficácia de ataques automatizados e scripts de brute force.
 
-### 🚫 Desativar recursos desnecessários
+###🚫 Desativação de recursos desnecessários
 X11Forwarding no
 AllowTcpForwarding no
 
 
-Motivo: diminui a superfície de ataque do serviço SSH.
+Motivo:
+Reduz a superfície de ataque ao desabilitar funcionalidades que não são necessárias para administração remota.
 
-### 🔁 Alterar porta padrão (opcional)
+###🔁 Alteração da porta padrão do SSH
 Port 2222
 
 
-Motivo: reduz ruído de scanners automáticos que atacam a porta 22 por padrão.
+Motivo:
+Diminui o ruído de scanners automáticos que atacam a porta 22 por padrão.
 
-### 🧪 Validação da configuração
+📌 Medida complementar, não substitui outras proteções.
 
-Antes de reiniciar o serviço, foi validada a sintaxe:
+###🧪 Validação da configuração
 
-sudo sshd -t
+Antes de reiniciar o serviço, a sintaxe do arquivo foi validada para evitar falhas de inicialização.
 
+📌 Nenhum erro foi identificado.
 
-Nenhum erro foi retornado, indicando configuração válida.
+###🔄 Reinicialização do serviço SSH
 
-### 🔄 Reinicialização do serviço SSH
-sudo systemctl restart ssh
+Após as alterações, o serviço SSH foi reiniciado para aplicar as novas configurações.
 
-### 🔌 Teste de conexão
+###🔌 Teste de Conectividade
 
-Teste de acesso remoto ao servidor:
+Foi realizado teste de acesso remoto utilizando:
 
-ssh -p 2222 kali@IP_DO_SERVIDOR
+Porta customizada
 
+Autenticação por chave
 
-O acesso foi realizado com sucesso utilizando autenticação por chave.
+Usuário autorizado
 
-### 📊 Monitoramento de Logs
+O acesso ocorreu com sucesso, confirmando que o hardening não impactou a disponibilidade do serviço.
 
-Para acompanhar tentativas de acesso e possíveis ataques:
+###📊 Monitoramento de Logs
 
-sudo tail -f /var/log/auth.log
+Foram analisados os logs de autenticação para identificar tentativas de acesso inválidas e conexões legítimas.
 
+📌 Esta etapa permite:
 
-Foram observadas tentativas de autenticação inválidas e conexões bem-sucedidas, permitindo análise de eventos de segurança.
+Detecção de ataques
+
+Auditoria de acessos
+
+Base para implementação do Fail2Ban 
+
+###✅ Resultado
+
+O serviço SSH foi fortalecido com sucesso, reduzindo significativamente riscos de ataques e acessos indevidos, mantendo a funcionalidade operacional do sistema.
+
+###🧠 Aprendizados
+
+Importância do princípio do menor privilégio
+
+Redução de superfície de ataque
+
+Hardening como camada essencial de defesa
